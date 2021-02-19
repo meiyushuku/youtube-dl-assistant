@@ -173,7 +173,12 @@ else:
             file_mover()
             display()
         else: 
-            print('Could not get video information of "%s"' % file_name)
+            print('{:d}/{:d} Could not get video information of "{:s}."'.format(
+                file_count,
+                file_count_total,                
+                file_name
+                )
+            )
             print("")
     print("Task is completed.")
 input()
