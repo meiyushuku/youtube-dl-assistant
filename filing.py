@@ -139,9 +139,13 @@ else:
     for file_name_abs in file_name_list:
         file_count += 1
         video_id = os.path.split(file_name_abs)[1].split()[1]
-        published_at = snippet.get_published_at(video_id)
-        channel_id = snippet.get_channel_id(video_id)
-        if snippet.error_snippet == 0:
+        try:
+            error_snippet = 0
+            published_at = snippet.get_published_at(video_id)
+            channel_id = snippet.get_channel_id(video_id)
+        except:
+            error_snippet = 1
+        if error_snippet == 0:
             csv_creator()
             file_renamer()
             channel_folder_creator()
