@@ -5,3 +5,4 @@ config.conf
 log.txt
 *.csv
 *.pyc
+config.json
