@@ -1,15 +1,15 @@
 import os
 import re
 import time
+import json
 import codecs
 import shutil
 import videoinfo
-import configparser
 
-config = configparser.ConfigParser()
-config.read("config.conf")
+with codecs.open("config.json", "r", "utf-8") as json_file:
+    config = json.load(json_file)
 
-path = config["config"]["work_dir"]
+path = config["general"]["workDir"]
 file_ext_isvideo = [".mkv", ".mp4"]
 task_timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # ISO 8601
 
@@ -134,7 +134,7 @@ def log_writer():
 
 file_count = 0
 file_searcher()
-print("Working directory: %s" % os.path.abspath(path))
+print("Working directory: %s" % path)
 if file_count_total == 0:
     print("No pending files.")
 else:
