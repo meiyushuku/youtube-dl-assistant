@@ -10,3 +10,4 @@ __pycache__/filing.cpython-39.pyc
 __pycache__/snippet.cpython-39.pyc
 log.txt
 config.conf
+*.pyc
