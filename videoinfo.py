@@ -1,13 +1,13 @@
 import json
 import codecs
-from apiclient.discovery import build
+from apiclient.discovery import build # pip install google-api-python-client
 
 with codecs.open("config.json", "r", "utf-8") as json_file:
     config = json.load(json_file)
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
-YOUTUBE_API_KEY = config["confidential"]["google"]["youtubeApiKey"]
+YOUTUBE_API_KEY = config["confidentials"]["google"]["youtubeApiKey"]
 youtube = build(
     YOUTUBE_API_SERVICE_NAME,
     YOUTUBE_API_VERSION,
