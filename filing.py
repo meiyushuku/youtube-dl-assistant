@@ -23,17 +23,17 @@ def file_searcher():
                     if file_name.split()[0] == "youtube-dl":
                         file_count_total += 1
                         file_name_list.append(file_name_abs)
-'''
+
 def csv_creator():
     try:
-        file_name_without_ext = os.path.splitext(os.path.split(file_name)[1])[0]
+        file_name_without_ext = os.path.splitext(os.path.split(file_name_abs)[1])[0]
         csv_output = 'https://www.youtube.com/watch?v=' + video_id + ',"' + file_name_without_ext + '",,MKV,,,,,"",'
         writer = codecs.open(task_timestamp + ".csv", "a","utf-8")
         writer.write("%s\n" % csv_output)
         writer.close()
     except:
         print("Error code: 101")
-'''
+
 def file_renamer():
     global error_renamer, file_name_rename 
     error_renamer = 0
@@ -142,12 +142,11 @@ else:
         published_at = snippet.get_published_at(video_id)
         channel_id = snippet.get_channel_id(video_id)
         if snippet.error_snippet == 0:
-            #csv_creator()
+            csv_creator()
             file_renamer()
             channel_folder_creator()
             file_mover()
             display()
-
         else: 
             message = str('{:d}/{:d} Could not get video information of "{:s}."'.format(
                 file_count,
