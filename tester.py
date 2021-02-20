@@ -5,7 +5,18 @@ import json
 import codecs
 import shutil
 
+import videoinfo
+
 video_id = "J9zp5D6JddI"
+print(videoinfo.get_video_info(video_id)[0])
+print("")
+print(videoinfo.get_video_info(video_id)[1])
+print("")
+print(videoinfo.get_video_info(video_id)[2])
+print("")
+print(videoinfo.get_video_info(video_id)[3])
+print("")
+
 '''
 with codecs.open("config.json", "r", "utf-8") as json_file:
     config = json.load(json_file)
