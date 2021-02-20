@@ -4,8 +4,8 @@ import time
 import json
 import codecs
 import shutil
+import insertgs
 import videoinfo
-import insert
 
 with codecs.open("config.json", "r", "utf-8") as json_file:
     config = json.load(json_file)
@@ -140,19 +140,18 @@ if file_count_total == 0:
     print("No pending files.")
 else:
     print("Pending: %d" % file_count_total)
-    input()
+    input("Type here >>> ")
     for file_name_abs in file_name_list:
-        #videoinfo_list = list()
         file_count += 1
         video_id = os.path.split(file_name_abs)[1].split()[1]
         try:
             error_videoinfo = 0
-            channel_id = videoinfo.get_channel_id(video_id)
-            published_at = videoinfo.get_published_at(video_id)  
+            channel_id = videoinfo.get_video_info(video_id)[1]
+            published_at = videoinfo.get_video_info(video_id)[2]
         except:
             error_videoinfo = 1
         if error_videoinfo == 0:
-            insert.inserter(video_id, file_name_abs)
+            insertgs.insert(video_id, file_name_abs)
             csv_creator()
             file_renamer()
             channel_folder_creator()
