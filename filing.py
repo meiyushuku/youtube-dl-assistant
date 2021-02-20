@@ -4,8 +4,12 @@ import time
 import codecs
 import shutil
 import snippet
+import configparser
 
-path = "D:\\Dropbox\\Workspace\\Programming\\DESKTOP-QVBHRG1\\youtube-dl-assistant testspace"
+config = configparser.ConfigParser()
+config.read("config.conf")
+
+path = config["config"]["work_dir"]
 file_ext_isvideo = [".mkv", ".mp4"]
 task_timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # ISO 8601
 
