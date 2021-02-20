@@ -1,10 +1,18 @@
 import os
 import re
 import time
+import json
 import codecs
 import shutil
-import snippet
 
+with codecs.open("config.json", "r", "utf-8") as json_file:
+    config = json.load(json_file)
+
+print(config["confidential"]["google"]["youtubeApiKey"])
+print(config["general"]["workDir"])
+
+
+'''
 path = "D:\\Dropbox\\Workspace\\Programming\\DESKTOP-QVBHRG1\\youtube-dl-assistant testspace"
 file_ext_isvideo = [".mkv", ".mp4"]
 task_timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # ISO 8601
@@ -63,3 +71,4 @@ else:
                 )
             )
             print("")
+'''
