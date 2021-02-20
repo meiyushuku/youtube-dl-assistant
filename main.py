@@ -9,8 +9,8 @@ print("")
 def switch():
     input_menu_orig = input("Type here >>> ")
     input_menu = input_menu_orig.strip()
-    if input_menu == "filing":
-        import filing
+    if input_menu == "rename":
+        import rename
     elif input_menu == "":
         print("Not entered.")
         return switch()
