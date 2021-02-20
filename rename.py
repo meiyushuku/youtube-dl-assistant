@@ -5,6 +5,7 @@ import json
 import codecs
 import shutil
 import videoinfo
+import insert
 
 with codecs.open("config.json", "r", "utf-8") as json_file:
     config = json.load(json_file)
@@ -141,15 +142,17 @@ else:
     print("Pending: %d" % file_count_total)
     input()
     for file_name_abs in file_name_list:
+        #videoinfo_list = list()
         file_count += 1
         video_id = os.path.split(file_name_abs)[1].split()[1]
         try:
             error_videoinfo = 0
-            published_at = videoinfo.get_published_at(video_id)
             channel_id = videoinfo.get_channel_id(video_id)
+            published_at = videoinfo.get_published_at(video_id)  
         except:
             error_videoinfo = 1
         if error_videoinfo == 0:
+            insert.inserter(video_id, file_name_abs)
             csv_creator()
             file_renamer()
             channel_folder_creator()
