@@ -1,13 +1,7 @@
-
-memo.txt
+cmd.txt
 insertAndRename.go
-UCa8GISK9_hsZ8aEJEL1u1Sg 20210122 uYhAm9BitA8 248 「クイズ」焦らし上手の沖さん【STU48chオリジナルドラマ瀬戸内学園 #6】.mkv
-UCB5GrB8WW4lNBEchPyuH87w 20201103 l-8CYgUncig 248 【秋の体力測定】予想とは違う結果に...重くて潰れちゃう〜♡笑　(コンサートの映像もあります).mkv
-UCbZvkG2uAgr6Oiva4FytscQ 20210131 5WS3L24LwNk 247 西野七瀬、インパクト大“男前”な関西弁披露　前回のあざと可愛いから一変！　KDDI『意識高すぎ！高杉くん』新CM「朝の挨拶」篇.mkv
-UCbZvkG2uAgr6Oiva4FytscQ 20210202 gkdCcaRQVqg 248 乃木坂46・遠藤さくら、NGに赤面！可愛すぎるリアクション　はるやま新TVCM「どんなシーンでも篇 レディス」メイキング.mkv
-drawer/cmd.txt
-__pycache__/filing.cpython-39.pyc
-__pycache__/snippet.cpython-39.pyc
-log.txt
+memo.txt
 config.conf
+log.txt
+*.csv
 *.pyc
