@@ -2,23 +2,64 @@ import os
 import re
 import time
 import codecs
-from apiclient.discovery import build
+import shutil
+import snippet
 
+path = "D:\\Dropbox\\Workspace\\Programming\\DESKTOP-QVBHRG1\\youtube-dl-assistant testspace"
 file_ext_isvideo = [".mkv", ".mp4"]
+task_timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # ISO 8601
 
-YOUTUBE_API_SERVICE_NAME = "youtube"
-YOUTUBE_API_VERSION = "v3"
-YOUTUBE_API_KEY = "AIzaSyAVKnfeGxZe3fMlpvNrlkrhD8hEs4DU6jE"
-youtube = build(
-    YOUTUBE_API_SERVICE_NAME,
-    YOUTUBE_API_VERSION,
-    developerKey=YOUTUBE_API_KEY
-    )
+def file_searcher():
+    global file_count_total, file_name_list
+    file_count_total = 0
+    file_name_list = list()
+    for file in os.listdir(path):
+        if os.path.isfile(os.path.join(path, file)):
+            file_name = file
+            file_name_abs = os.path.join(path, file_name)
+            file_size = os.path.getsize(file_name_abs)
+            if file_size != 0:
+                if str(os.path.splitext(file_name_abs)[1]).lower() in file_ext_isvideo:
+                    if file_name.split()[0] == "youtube-dl":
+                        file_count_total += 1
+                        file_name_list.append(file_name_abs)
 
-def get_channel_id(video_id):
-    channel_id = youtube.videos().list(part = "snippet", id = video_id).execute()["items"][0]["snippet"]["channelId"]
-    return channel_id
+def file_renamer():
+    global error_renamer, file_name_rename 
+    error_renamer = 0
+    try:
+        rename_published_at = re.sub("[-:]", "", published_at)
+        rename_ext = os.path.splitext(file_name_abs)[1]
+        file_name_rename = os.path.join(os.path.split(file_name_abs)[0], rename_published_at) + " " + video_id + rename_ext
+        #os.rename(file_name_abs, file_name_rename)
+    except:
+        error_renamer = 1
 
-video_id = "gkdCcaRQVqg"
-channel_id = get_channel_id(video_id)
-print(channel_id)
+file_count = 0
+file_searcher()
+print("Working directory: %s" % path)
+if file_count_total == 0:
+    print("No pending files.")
+else:
+    print("Pending: %d" % file_count_total)
+    input()
+    for file_name_abs in file_name_list:
+        file_count += 1
+        video_id = os.path.split(file_name_abs)[1].split()[1]
+        published_at = snippet.get_published_at(video_id)
+        channel_id = snippet.get_channel_id(video_id)
+        if snippet.error_snippet == 0:
+            #csv_creator()
+            file_renamer()
+            #channel_folder_creator()
+            #file_mover()
+            #display()
+            print("ya")
+        else: 
+            print('{:d}/{:d} Could not get video information of "{:s}."'.format(
+                file_count,
+                file_count_total,                
+                os.path.split(file_name_abs)[1]
+                )
+            )
+            print("")
