@@ -36,6 +36,7 @@ def get_channel_title(video_id):
 def get_duration(video_id):
     duration = youtube.videos().list(part = "contentDetails", id = video_id).execute()["items"][0]["contentDetails"]["duration"]
     return duration
+
 '''
 video_id = "J9zp5D6JddI"
 print(get_published_at(video_id))
