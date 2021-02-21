@@ -74,7 +74,6 @@ def file_mover():
         error_mover = 1
 
 def display():
-    global message
     if error_renamer == 1:
         message = str('{:d}/{:d} Could not rename "{:s}," file "{:s}" already exists.'.format(
             file_count,
@@ -83,7 +82,7 @@ def display():
             os.path.split(file_name_rename)[1]
             )
         )
-        log_writer()
+        log_writer(message)
         print(message)
         print("")
     elif error_creator == 1:
@@ -95,7 +94,7 @@ def display():
             os.path.split(file_name_rename)[1]
             )
         )
-        log_writer()
+        log_writer(message)
         print(message)
         print("")
     elif error_mover == 1:
@@ -108,7 +107,7 @@ def display():
             os.path.split(file_name_rename)[1]
             )
         )
-        log_writer()
+        log_writer(message)
         print(message)
         print("")
     else:
@@ -120,11 +119,11 @@ def display():
             channel_id
             )
         )
-        log_writer()
+        log_writer(message)
         print(message)
         print("")
 
-def log_writer():
+def log_writer(message):
     writer = codecs.open("log.txt", "a","utf-8")
     if file_count == 1:
         writer.write("%s\n" % task_timestamp)
