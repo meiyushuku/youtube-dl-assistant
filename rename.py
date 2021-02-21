@@ -29,16 +29,6 @@ def file_searcher():
                         file_count_total += 1
                         file_name_list.append(file_name_abs)
 
-def csv_creator():
-    try:
-        file_name_without_ext = os.path.splitext(os.path.split(file_name_abs)[1])[0]
-        csv_output = 'https://www.youtube.com/watch?v=' + video_id + ',"' + file_name_without_ext + '",,MKV,,,,,"",'
-        writer = codecs.open(task_timestamp + ".csv", "a","utf-8")
-        writer.write("%s\n" % csv_output)
-        writer.close()
-    except:
-        print("Error code: 101")
-
 def file_renamer():
     global error_renamer, file_name_rename 
     error_renamer = 0
@@ -145,42 +135,52 @@ def rename_exe():
         for file_name_abs in file_name_list:
             file_count += 1
             video_id = os.path.split(file_name_abs)[1].split()[1]
-            error_apis = 0
-            try:
-                video_info_list = list()
-                video_info_list = videoinfo.get_video_info(video_id) # Catch video_info_list from videoinfo.
-                channel_id = video_info_list[1]
-                published_at = video_info_list[2]
-            except:
-                error_apis = 1
-            try:
+            if insertgs.exists(video_id) == 1:
+                message = str('{:d}/{:d} Video "{:s}" already exists.'.format(
+                    file_count,
+                    file_count_total,
+                    video_id
+                    )
+                )
+                log_writer(message)
+                print(message)
+                print("")
+            else:
+                error_apis = 0
+                try:
+                    video_info_list = list()
+                    video_info_list = videoinfo.get_video_info(video_id) # Catch video_info_list from videoinfo.
+                    channel_id = video_info_list[1]
+                    published_at = video_info_list[2]
+                except:
+                    error_apis = 1
+                try:
+                    if error_apis == 0:
+                        insertgs.insert(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
+                except:
+                    error_apis = 2
                 if error_apis == 0:
-                    insertgs.insert(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
-            except:
-                error_apis = 2
-            if error_apis == 0:
-                csv_creator()
-                file_renamer()
-                channel_folder_creator()
-                file_mover()
-                display()
-            elif error_apis == 1:
-                message = str('{:d}/{:d} Could not get video information of "{:s}."'.format(
-                    file_count,
-                    file_count_total,                
-                    os.path.split(file_name_abs)[1]
+                    file_renamer()
+                    channel_folder_creator()
+                    file_mover()
+                    display()
+                elif error_apis == 1:
+                    message = str('{:d}/{:d} Could not get video information of "{:s}."'.format(
+                        file_count,
+                        file_count_total,                
+                        os.path.split(file_name_abs)[1]
+                        )
                     )
-                )
-                log_writer()
-                print(message)
-                print("")
-            elif error_apis == 2:
-                message = str('{:d}/{:d} Could not insert video information of "{:s} to sheet."'.format(
-                    file_count,
-                    file_count_total,                
-                    os.path.split(file_name_abs)[1]
+                    log_writer(message)
+                    print(message)
+                    print("")
+                elif error_apis == 2:
+                    message = str('{:d}/{:d} Could not insert video information of "{:s} to sheet."'.format(
+                        file_count,
+                        file_count_total,                
+                        os.path.split(file_name_abs)[1]
+                        )
                     )
-                )
-                log_writer()
-                print(message)
-                print("")
+                    log_writer(message)
+                    print(message)
+                    print("")
