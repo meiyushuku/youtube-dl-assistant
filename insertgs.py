@@ -34,5 +34,4 @@ def insert(video_info_list, video_id, file_name_abs): # Catch video_info_list fr
     video_info_dict["user"] = USER
     video_info_dict["extension"] = re.sub("[.]", "", os.path.splitext(file_name_abs)[1])
     video_info_dict["ignoreIfExist"] = True
-    video_info_dict_json = json.dumps(video_info_dict, ensure_ascii = False)
     response = requests.post(DATABASE_API_URL, json = video_info_dict)
