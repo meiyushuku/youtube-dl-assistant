@@ -4,7 +4,6 @@ import time
 import json
 import codecs
 import gspread # pip install gspread
-import videoinfo
 from oauth2client.service_account import ServiceAccountCredentials # pip install oauth2client
 
 with codecs.open("config.json", "r", "utf-8") as json_file:
