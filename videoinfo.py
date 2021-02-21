@@ -16,35 +16,14 @@ youtube = build(
 
 def get_video_info(video_id):
     video_info_list = list()
-    video_info_list.clear()
-    channel_title = youtube.videos().list(
-        part = "snippet",
+    items = youtube.videos().list(
+        part = "snippet, contentDetails",
         id = video_id
-        ).execute()["items"][0]["snippet"]["channelTitle"]
-    channel_id = youtube.videos().list(
-        part = "snippet",
-        id = video_id
-        ).execute()["items"][0]["snippet"]["channelId"]   
-    published_at = youtube.videos().list(
-        part = "snippet",
-        id = video_id
-        ).execute()["items"][0]["snippet"]["publishedAt"]
-    title = youtube.videos().list(
-        part = "snippet",
-        id = video_id
-        ).execute()["items"][0]["snippet"]["title"]
-    description = youtube.videos().list(
-        part = "snippet",
-        id = video_id
-        ).execute()["items"][0]["snippet"]["description"]
-    duration = youtube.videos().list(
-        part = "contentDetails",
-        id = video_id
-        ).execute()["items"][0]["contentDetails"]["duration"]
-    video_info_list.append(channel_title) # 0
-    video_info_list.append(channel_id) # 1
-    video_info_list.append(published_at) # 2
-    video_info_list.append(title) # 3
-    video_info_list.append(description) # 4
-    video_info_list.append(duration) # 5
-    return video_info_list
+        ).execute()["items"][0]
+    video_info_list.append(items["snippet"]["channelTitle"]) # 0
+    video_info_list.append(items["snippet"]["channelId"]) # 1
+    video_info_list.append(items["snippet"]["publishedAt"]) # 2
+    video_info_list.append(items["snippet"]["title"]) # 3
+    video_info_list.append(items["snippet"]["description"]) # 4
+    video_info_list.append(items["contentDetails"]["duration"]) # 5
+    return video_info_list # Throw video_info_list to rename.
