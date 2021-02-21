@@ -1,7 +1,7 @@
 import sys
 from rename import rename_exe 
 
-VERSION = "0.9.0"
+VERSION = "0.9.0 Beta"
 print("youtube-dl-assistant-private")
 print("Version %s (2021) Developed by Meiyu Shuku" % VERSION)
 print("")
