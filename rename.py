@@ -146,12 +146,15 @@ else:
         video_id = os.path.split(file_name_abs)[1].split()[1]
         try:
             error_videoinfo = 0
-            channel_id = videoinfo.get_video_info(video_id)[1]
-            published_at = videoinfo.get_video_info(video_id)[2]
+            video_info_list = list()
+            video_info_list = videoinfo.get_video_info(video_id) # Catch video_info_list from videoinfo.
+            channel_id = video_info_list[1]
+            published_at = video_info_list[2]
+            insertgs.insert(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
         except:
             error_videoinfo = 1
         if error_videoinfo == 0:
-            insertgs.insert(video_id, file_name_abs)
+            
             csv_creator()
             file_renamer()
             channel_folder_creator()
