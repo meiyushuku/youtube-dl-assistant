@@ -133,53 +133,55 @@ def log_writer():
         writer.write("%s\n" % message)
     writer.close()
 
-file_count = 0
-file_searcher()
-print("Working directory: %s" % path)
-if file_count_total == 0:
-    print("No pending files.")
-else:
-    print("Pending: %d" % file_count_total)
-    input("Type here >>> ")
-    for file_name_abs in file_name_list:
-        file_count += 1
-        video_id = os.path.split(file_name_abs)[1].split()[1]
-        error_apis = 0
-        try:
-            video_info_list = list()
-            video_info_list = videoinfo.get_video_info(video_id) # Catch video_info_list from videoinfo.
-            channel_id = video_info_list[1]
-            published_at = video_info_list[2]
-        except:
-            error_apis = 1
-        try:
+def rename_exe():
+    global file_count, file_name_abs, video_id, channel_id, published_at
+    file_count = 0
+    file_searcher()
+    print("Working directory: %s" % path)
+    if file_count_total == 0:
+        print("No pending files.")
+    else:
+        print("Pending: %d" % file_count_total)
+        input("Type here >>> ")
+        for file_name_abs in file_name_list:
+            file_count += 1
+            video_id = os.path.split(file_name_abs)[1].split()[1]
+            error_apis = 0
+            try:
+                video_info_list = list()
+                video_info_list = videoinfo.get_video_info(video_id) # Catch video_info_list from videoinfo.
+                channel_id = video_info_list[1]
+                published_at = video_info_list[2]
+            except:
+                error_apis = 1
+            try:
+                if error_apis == 0:
+                    insertgs.insert(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
+            except:
+                error_apis = 2
             if error_apis == 0:
-                insertgs.insert(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
-        except:
-            error_apis = 2
-        if error_apis == 0:
-            csv_creator()
-            file_renamer()
-            channel_folder_creator()
-            file_mover()
-            display()
-        elif error_apis == 1:
-            message = str('{:d}/{:d} Could not get video information of "{:s}."'.format(
-                file_count,
-                file_count_total,                
-                os.path.split(file_name_abs)[1]
+                csv_creator()
+                file_renamer()
+                channel_folder_creator()
+                file_mover()
+                display()
+            elif error_apis == 1:
+                message = str('{:d}/{:d} Could not get video information of "{:s}."'.format(
+                    file_count,
+                    file_count_total,                
+                    os.path.split(file_name_abs)[1]
+                    )
                 )
-            )
-            log_writer()
-            print(message)
-            print("")
-        elif error_apis == 2:
-            message = str('{:d}/{:d} Could not insert video information of "{:s} to sheet."'.format(
-                file_count,
-                file_count_total,                
-                os.path.split(file_name_abs)[1]
+                log_writer()
+                print(message)
+                print("")
+            elif error_apis == 2:
+                message = str('{:d}/{:d} Could not insert video information of "{:s} to sheet."'.format(
+                    file_count,
+                    file_count_total,                
+                    os.path.split(file_name_abs)[1]
+                    )
                 )
-            )
-            log_writer()
-            print(message)
-            print("")
+                log_writer()
+                print(message)
+                print("")
