@@ -1,4 +1,9 @@
-import requests
-r = requests.get("https://www.youtube.com/watch?v=QtXNvoPfO84&ab_channel=THEFIRSTTAKE")
+import tkinter
+from tkinter import filedialog
 
-print(r)
+root = tkinter.Tk()
+root.withdraw()
+
+file_path = filedialog.askdirectory()
+
+print(file_path)
