@@ -144,24 +144,37 @@ else:
     for file_name_abs in file_name_list:
         file_count += 1
         video_id = os.path.split(file_name_abs)[1].split()[1]
+        error_apis = 0
         try:
-            error_videoinfo = 0
             video_info_list = list()
             video_info_list = videoinfo.get_video_info(video_id) # Catch video_info_list from videoinfo.
             channel_id = video_info_list[1]
             published_at = video_info_list[2]
-            insertgs.insert(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
         except:
-            error_videoinfo = 1
-        if error_videoinfo == 0:
-            
+            error_apis = 1
+        try:
+            if error_apis == 0:
+                insertgs.insert(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
+        except:
+            error_apis = 2
+        if error_apis == 0:
             csv_creator()
             file_renamer()
             channel_folder_creator()
             file_mover()
             display()
-        else: 
+        elif error_apis == 1:
             message = str('{:d}/{:d} Could not get video information of "{:s}."'.format(
+                file_count,
+                file_count_total,                
+                os.path.split(file_name_abs)[1]
+                )
+            )
+            log_writer()
+            print(message)
+            print("")
+        elif error_apis == 2:
+            message = str('{:d}/{:d} Could not insert video information of "{:s} to sheet."'.format(
                 file_count,
                 file_count_total,                
                 os.path.split(file_name_abs)[1]
