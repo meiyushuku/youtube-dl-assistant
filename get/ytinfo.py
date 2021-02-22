@@ -1,5 +1,7 @@
+import time
 import json
 import codecs
+from doc import tool
 from apiclient.discovery import build # pip install google-api-python-client
 
 with codecs.open("doc/config.json", "r", "utf-8") as json_file:
@@ -20,6 +22,8 @@ def get_video_info(video_id):
         part = "snippet, contentDetails",
         id = video_id
         ).execute()["items"][0]
+    timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # UTC+0
+    tool.json_writer("data/ytresp/v/" + timestamp + " " + video_id + ".json", items)
     video_info_list.append(items["snippet"]["channelTitle"]) # 0
     video_info_list.append(items["snippet"]["channelId"]) # 1
     video_info_list.append(items["snippet"]["publishedAt"]) # 2
