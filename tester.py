@@ -1,32 +1,47 @@
+import sys
 import threading
 import time
+from rename import rename_exe
 
-import sys
-import json
-import codecs
-from mttkinter import mtTkinter as tk # pip install mttkinter
-from tkinter import filedialog
+VERSION = "0.9.0"
+print("youtube-dl-assistant-private")
+print("Version %s (2021) Developed by Meiyu Shuku" % VERSION)
+print("")
 
-def read_json(json_file_name):
-	with codecs.open(json_file_name, "rb", "utf-8") as json_file:
-		json_data = json.load(json_file)
-	return json_data
+def switch():
+    global monit_mission
+    input_menu_orig = input("Type here >>> ")
+    input_menu = input_menu_orig.strip()
+    if input_menu == "rename":
+        rename_exe()
+    elif input_menu == "monit -on":
+        monit_mission = 1
+        thread.start()
+        return switch()
+    elif input_menu == "":
+        print("Not entered.")
+        return switch()
+    else:
+        print("Command is not defined.")
+        return switch()
 
-def write_json(json_file_name, config):
-	with codecs.open(json_file_name, "w", "utf-8") as json_file:
-		json.dump(config, json_file, ensure_ascii = False, indent = 4)
+def monit():
+    while monit_mission:
+        rename_exe()
+        time.sleep(1)
+
+thread = threading.Thread(target = monit)
 
 
-def chgdir():
-    input_chgdir_orig = input("Type here >>> ")
-    input_chgdir = input_chgdir_orig.strip()
-    json_file_name = "configtest.json"
-    config = read_json(json_file_name)
-    config["general"]["workDir"] = input_chgdir
-    write_json(json_file_name, config)
+controller = 1
+while controller:
+    switch()
 
-
-
-
-
-input()
+    print('Task is completed. Type "menu" to return to menu or exit by any other.')
+    input_end_orig = input("Type here >>> ")
+    input_end = input_end_orig.strip()
+    if input_end == "menu":
+        print("Returned to menu.")
+        pass
+    else:
+        sys.exit()
