@@ -1,6 +1,4 @@
 import sys
-import json
-import codecs
 from rename import rename_exe
 
 VERSION = "0.9.0"
