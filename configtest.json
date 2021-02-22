@@ -1,14 +1,14 @@
 {
-    "confidentials":{
-        "google":{
+    "confidentials": {
+        "google": {
             "youtubeApiKey": "123",
             "sheetKeyFile": "123",
             "sheetId": "123",
             "databeseApiUrl": "123"
         }
     },
-    "general":{
-        "workDir": "D:\\Dropbox\\Workspace\\Programming\\sharetestspace\\desktop",
+    "general": {
+        "workDir": "C:/Users/meiyu/OneDrive/デスクトップ",
         "user": "shuku"
     }
 }
