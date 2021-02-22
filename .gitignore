@@ -7,3 +7,6 @@ log.txt
 *.pyc
 config.json
 extreme-lodge-299820-5600f220b0d2.json
+drawer/kivy-gui-setup.py
+drawer/configtest.json
+drawer/chg-work-dir-via-gui.py
