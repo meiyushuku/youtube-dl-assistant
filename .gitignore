@@ -1,12 +1,6 @@
 *.pyc
-extreme-lodge-299820-5600f220b0d2.json
-drawer/kivy-gui-setup.py
-drawer/cmd.txt
-drawer/insertAndRename.go
-drawer/configtest.json
-drawer/chg-work-dir-via-gui.py
-drawer/memo.txt
-data/*.*
 data/ytresp/v/*.json
 doc/confidentials.json
+doc/extreme-lodge-??????-????????????.json
 doc/log.txt
+drawer/*.*
