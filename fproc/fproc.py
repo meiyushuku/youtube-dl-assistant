@@ -1,17 +1,16 @@
 import os
 import re
 import time
-import json
 import codecs
 import shutil
 from fproc import insertgs
 from get import ytinfo
+from doc import tool
 
-with codecs.open("doc/config.json", "r", "utf-8") as json_file:
-    config = json.load(json_file)
+config = tool.json_reader("doc/config.json")
 
 path = config["general"]["workDir"]
-file_ext_isvideo = [".mkv", ".mp4"]
+isvideo = config["general"]["isVideo"]
 task_timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # ISO 8601
 
 def file_searcher():
@@ -24,7 +23,7 @@ def file_searcher():
             file_name_abs = os.path.join(path, file_name)
             file_size = os.path.getsize(file_name_abs)
             if file_size != 0:
-                if str(os.path.splitext(file_name_abs)[1]).lower() in file_ext_isvideo:
+                if str(os.path.splitext(file_name_abs)[1]).lower() in isvideo:
                     if file_name.split()[0] == "youtube-dl":
                         file_count_total += 1
                         file_name_list.append(file_name_abs)
