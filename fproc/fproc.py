@@ -3,9 +3,9 @@ import re
 import time
 import codecs
 import shutil
-from fproc import insertgs
-from get import ytinfo
 from doc import tool
+from get import ytinfo
+from fproc import insertgs
 
 config = tool.json_reader("doc/config.json")
 
