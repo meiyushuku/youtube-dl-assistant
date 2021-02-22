@@ -11,3 +11,4 @@ drawer/kivy-gui-setup.py
 drawer/configtest.json
 drawer/chg-work-dir-via-gui.py
 data/*.*
+doc/confidentials.json
