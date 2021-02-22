@@ -2,20 +2,20 @@ import os
 import re
 import time
 import json
-import codecs
 import gspread # pip install gspread
+from doc import tool
 from oauth2client.service_account import ServiceAccountCredentials # pip install oauth2client
 
-with codecs.open("doc/config.json", "r", "utf-8") as json_file:
-    config = json.load(json_file)
+config = tool.json_reader("doc/config.json")
+confidentials = tool.json_reader("doc/confidentials.json")
 
 USER = config["general"]["user"]
-SHEET_KEY_FILE = config["confidentials"]["google"]["sheetKeyFile"]
-SHEET_ID = config["confidentials"]["google"]["sheetId"]
+SHEET_KEY_FILE = confidentials["google"]["sheetKeyFile"]
+SHEET_ID = confidentials["google"]["sheetId"]
 SCOPE = "https://spreadsheets.google.com/feeds"
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(SHEET_KEY_FILE, SCOPE)
-client = gspread.authorize(credentials)
+cert = ServiceAccountCredentials.from_json_keyfile_name(SHEET_KEY_FILE, SCOPE)
+client = gspread.authorize(cert)
 
 sheet = client.open_by_key(SHEET_ID).sheet1
 
