@@ -130,14 +130,16 @@ def main():
     except:
         dir_error = 1
     if dir_error == 1:
-        print("Directory error.")
+        pass
+        #print("Directory error.")
     else:
-        print("Working directory: %s" % path)
+        #print("Working directory: %s" % path)
         if file_count_total == 0:
-            print("No pending files.")
+            pass
+            #print("No pending files.")
         else:
-            print("Pending: %d" % file_count_total)
-            input("Type here >>> ")
+            #print("Pending: %d" % file_count_total)
+            #input("Type here >>> ")
             for file_name_abs in file_name_list:
                 file_count += 1
                 video_id = os.path.split(file_name_abs)[1].split()[1]
