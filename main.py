@@ -1,5 +1,5 @@
 import sys
-from rename import rename_exe
+from fproc import fproc
 
 VERSION = "0.9.0"
 print("youtube-dl-assistant-private")
@@ -9,8 +9,8 @@ print("")
 def switch():
     input_menu_orig = input("Type here >>> ")
     input_menu = input_menu_orig.strip()
-    if input_menu == "rename":
-        rename_exe()
+    if input_menu == "fproc":
+        fproc.main()
     elif input_menu == "":
         print("Not entered.")
         return switch()
