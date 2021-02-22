@@ -1,3 +1,5 @@
+import threading
+import time
 import sys
 from fproc import fproc
 
@@ -9,8 +11,9 @@ print("")
 def switch():
     input_menu_orig = input("Type here >>> ")
     input_menu = input_menu_orig.strip()
-    if input_menu == "fproc":
-        fproc.main()
+    if input_menu == "test":
+        print("test")
+        return switch()
     elif input_menu == "":
         print("Not entered.")
         return switch()
@@ -18,8 +21,13 @@ def switch():
         print("Command is not defined.")
         return switch()
 
-controller = 1
-while controller:
+def fproc_bg():
+    while True:
+        fproc.main()
+
+while True:
+    thread = threading.Thread(target = fproc_bg)
+    thread.start()
     switch()
     print('Task is completed. Type "menu" to return to menu or exit by any other.')
     input_end_orig = input("Type here >>> ")
