@@ -7,7 +7,7 @@ import getyt
 import common
 import insertgs
 
-config = common.json_reader("doc/config.json")
+config = common.read_json("doc/config.json")
 
 path = config["general"]["workDir"]
 isvideo = config["general"]["isVideo"]
@@ -43,9 +43,8 @@ def channel_folder_creator():
     global error_creator
     error_creator = 0
     try: 
-        if error_renamer == 0:
-            if not os.path.isdir(os.path.join(path, channel_id)):
-                os.mkdir(os.path.join(path, channel_id))
+        if error_renamer == 0: 
+            common.make_dir(os.path.join(path, channel_id))
         else:
             return
     except:
