@@ -2,7 +2,7 @@ import time
 import common
 from apiclient.discovery import build # pip install google-api-python-client
 
-confidentials = common.json_reader("doc/confidentials.json")
+confidentials = common.read_json("doc/confidentials.json")
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
@@ -22,7 +22,7 @@ def get_video_info(video_id):
     timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # UTC+0
     resp_save_dest = "data/resp/yt/v/"
     common.make_dir(resp_save_dest)
-    common.json_writer(resp_save_dest + timestamp + " " + video_id + ".json", items)
+    common.write_json(resp_save_dest + timestamp + " " + video_id + ".json", items)
     video_info_list.append(items["snippet"]["channelTitle"]) # 0
     video_info_list.append(items["snippet"]["channelId"]) # 1
     video_info_list.append(items["snippet"]["publishedAt"]) # 2
