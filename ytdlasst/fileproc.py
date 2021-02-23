@@ -1,6 +1,5 @@
 import os
 import re
-import time
 import codecs
 import shutil
 import getyt
@@ -11,7 +10,6 @@ config = common.read_json("doc/config.json")
 
 path = config["general"]["workDir"]
 isvideo = config["general"]["isVideo"]
-task_timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # ISO 8601
 
 def file_searcher():
     global file_count_total, file_name_list
@@ -63,9 +61,8 @@ def file_mover():
 
 def display():
     if error_renamer == 1:
-        message = str('{:d}/{:d} Could not rename "{:s}," file "{:s}" already exists.'.format(
-            file_count,
-            file_count_total,
+        message = str('{:s} Could not rename "{:s}," file "{:s}" already exists.'.format(
+            common.now_iso(2),
             os.path.split(file_name_abs)[1],
             os.path.split(file_name_rename)[1]
             )
@@ -74,9 +71,8 @@ def display():
         print(message)
         print("")
     elif error_creator == 1:
-        message = str('{:d}/{:d} Could not create channel folder, file "{:s}" already exists. "{:s}" has been renamed as "{:s}."'.format(
-            file_count,
-            file_count_total,
+        message = str('{:s} Could not create channel folder, file "{:s}" already exists. "{:s}" has been renamed as "{:s}."'.format(
+            common.now_iso(2),
             channel_id,
             os.path.split(file_name_abs)[1],
             os.path.split(file_name_rename)[1]
@@ -86,9 +82,8 @@ def display():
         print(message)
         print("")
     elif error_mover == 1:
-        message = str('{:d}/{:d} Could not move "{:s}" to "{:s}", file with same name already exists there. "{:s}" has been renamed as "{:s}.'.format(
-            file_count,
-            file_count_total,
+        message = str('{:s} Could not move "{:s}" to "{:s}", file with same name already exists there. "{:s}" has been renamed as "{:s}.'.format(
+            common.now_iso(2),
             os.path.split(file_name_rename)[1],
             channel_id,
             os.path.split(file_name_abs)[1],
@@ -99,9 +94,8 @@ def display():
         print(message)
         print("")
     else:
-        message = str('{:d}/{:d} Successfully. "{:s}" renamed as "{:s}" and moved to "{:s}."'.format(
-            file_count,
-            file_count_total,
+        message = str('{:s} Successfully. "{:s}" renamed as "{:s}" and moved to "{:s}."'.format(
+            common.now_iso(2),
             os.path.split(file_name_abs)[1],
             os.path.split(file_name_rename)[1],
             channel_id
@@ -113,11 +107,7 @@ def display():
 
 def log_writer(message):
     writer = codecs.open("doc/log.txt", "a","utf-8")
-    if file_count == 1:
-        writer.write("%s\n" % task_timestamp)
-        writer.write("%s\n" % message)
-    else:
-        writer.write("%s\n" % message)
+    writer.write("%s\n" % message)
     writer.close()
 
 def main():
@@ -143,9 +133,8 @@ def main():
                 file_count += 1
                 video_id = os.path.split(file_name_abs)[1].split()[1]
                 if insertgs.exists(video_id) == 1:
-                    message = str('{:d}/{:d} Video "{:s}" already exists.'.format(
-                        file_count,
-                        file_count_total,
+                    message = str('{:s} Video "{:s}" already exists.'.format(
+                        common.now_iso(2),
                         video_id
                         )
                     )
@@ -172,9 +161,8 @@ def main():
                         file_mover()
                         display()
                     elif error_apis == 1:
-                        message = str('{:d}/{:d} Could not get video information of "{:s}."'.format(
-                            file_count,
-                            file_count_total,                
+                        message = str('{:s} Could not get video information of "{:s}."'.format(
+                            common.now_iso(2),           
                             os.path.split(file_name_abs)[1]
                             )
                         )
@@ -182,9 +170,8 @@ def main():
                         print(message)
                         print("")
                     elif error_apis == 2:
-                        message = str('{:d}/{:d} Could not insert video information of "{:s} to sheet."'.format(
-                            file_count,
-                            file_count_total,                
+                        message = str('{:s} Could not insert video information of "{:s} to sheet."'.format(
+                            common.now_iso(2),           
                             os.path.split(file_name_abs)[1]
                             )
                         )
