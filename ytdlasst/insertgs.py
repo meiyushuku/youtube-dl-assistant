@@ -1,6 +1,5 @@
 import os
 import re
-import time
 import json
 import common
 import gspread # pip install gspread
@@ -39,7 +38,7 @@ def insert(video_info_list, video_id, file_name_abs): # Catch video_info_list fr
     insert_list.append("") # customDescription
     insert_list.append(video_info_list[5]) # duration
     insert_list.append(USER) # user
-    insert_list.append(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time()))) # lastUpdate
+    insert_list.append(common.now_iso(2)) # lastUpdate
     insert_list.append(re.sub("[.]", "", os.path.splitext(file_name_abs)[1])) # extension
     sheet = client.open_by_key(SHEET_ID).sheet1
     sheet.append_row(insert_list, table_range = "A:A")
