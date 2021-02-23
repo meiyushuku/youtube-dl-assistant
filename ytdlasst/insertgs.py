@@ -6,8 +6,8 @@ import common
 import gspread # pip install gspread
 from oauth2client.service_account import ServiceAccountCredentials # pip install oauth2client
 
-config = common.json_reader("doc/config.json")
-confidentials = common.json_reader("doc/confidentials.json")
+config = common.read_json("doc/config.json")
+confidentials = common.read_json("doc/confidentials.json")
 
 USER = config["general"]["user"]
 SHEET_KEY_FILE = confidentials["google"]["sheetKeyFile"]
