@@ -20,7 +20,9 @@ def get_video_info(video_id):
         id = video_id
         ).execute()["items"][0]
     timestamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time())) # UTC+0
-    common.json_writer("data/resp/yt/v/" + timestamp + " " + video_id + ".json", items)
+    resp_save_dest = "data/resp/yt/v/"
+    common.make_dir(resp_save_dest)
+    common.json_writer(resp_save_dest + timestamp + " " + video_id + ".json", items)
     video_info_list.append(items["snippet"]["channelTitle"]) # 0
     video_info_list.append(items["snippet"]["channelId"]) # 1
     video_info_list.append(items["snippet"]["publishedAt"]) # 2
