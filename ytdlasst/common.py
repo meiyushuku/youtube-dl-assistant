@@ -1,4 +1,5 @@
 import os
+import time
 import json
 import codecs
 
@@ -14,3 +15,10 @@ def write_json(json_file_name, content):
 def make_dir(path):
     if not os.path.isdir(path):
         os.makedirs(path)
+
+def now_iso(rep): # ISO 8601
+	if rep == 1:
+		time_return = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time()))
+	elif rep == 2:
+		time_return = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time()))
+	return time_return
