@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import requests
 import common
 import gspread # pip install gspread
 from oauth2client.service_account import ServiceAccountCredentials # pip install oauth2client
@@ -13,21 +14,41 @@ SHEET_KEY_FILE = confidentials["google"]["sheetKeyFile"]
 SHEET_ID = confidentials["google"]["sheetId"]
 SCOPE = "https://spreadsheets.google.com/feeds"
 
+DATABASE_API_URL = confidentials["google"]["databeseApiUrl"]
+
 cert = ServiceAccountCredentials.from_json_keyfile_name(SHEET_KEY_FILE, SCOPE)
 client = gspread.authorize(cert)
+sheet1 = client.open_by_key(SHEET_ID).get_worksheet(0) # channelInfo
+sheet2 = client.open_by_key(SHEET_ID).get_worksheet(1) # videoInfo
 
-sheet = client.open_by_key(SHEET_ID).sheet1
-
-def exists(video_id):
-    video_exists = 0
-    try:
-        if sheet.find(video_id) != None:
-            video_exists = 1
-    except:
-        pass
+def video_exists(video_id):
+    video_info_url = DATABASE_API_URL + "?method=getVideoInfoByVideoId&site=YT&videoId=" + video_id
+    response = requests.get(video_info_url)
+    if json.loads(response.text):
+        video_exists = 0
+    else:
+        video_exists = 0
     return video_exists
 
-def insert(video_info_list, video_id, file_name_abs): # Catch video_info_list from fproc.
+'''
+def video_exists(video_id):
+    try:
+        if sheet2.find(video_id):
+            video_exists = 1
+    except:
+        video_exists = 0
+    return video_exists
+'''
+
+def channel_exists(channel_id):
+    try:
+        if sheet1.find(channel_id):
+            channel_exists = 1
+    except:
+        channel_exists = 0
+    return channel_exists
+
+def insert_video(video_info_list, video_id, file_name_abs): # Catch video_info_list from fproc.
     insert_list = list()
     insert_list.append("YT") # site
     insert_list.append(video_info_list[1]) # channelId
@@ -40,5 +61,6 @@ def insert(video_info_list, video_id, file_name_abs): # Catch video_info_list fr
     insert_list.append(USER) # user
     insert_list.append(common.now_iso(2)) # lastUpdate
     insert_list.append(re.sub("[.]", "", os.path.splitext(file_name_abs)[1])) # extension
-    sheet = client.open_by_key(SHEET_ID).sheet1
-    sheet.append_row(insert_list, table_range = "A:A")
+    sheet2.append_row(insert_list, table_range = "A:A")
+
+#def insert_channel():
