@@ -5,11 +5,17 @@ import shutil
 import getyt
 import common
 import insertgs
+import globalvar as glo
 
 config = common.read_json("doc/config.json")
 
 path = config["general"]["workDir"]
 isvideo = config["general"]["isVideo"]
+
+glo._init()
+glo.set_list("")
+ignore_list = glo.get_list()
+ignore_temp = common.read_json("ignore.json")
 
 def file_searcher():
     global file_count_total, file_name_list
@@ -23,8 +29,9 @@ def file_searcher():
             if file_size != 0:
                 if str(os.path.splitext(file_name_abs)[1]).lower() in isvideo:
                     if file_name.split()[0] == "youtube-dl":
-                        file_count_total += 1
-                        file_name_list.append(file_name_abs)
+                        if file_name_abs not in ignore_temp["ignore"]:
+                            file_count_total += 1
+                            file_name_list.append(file_name_abs)
 
 def file_renamer():
     global error_renamer, file_name_rename 
@@ -35,6 +42,7 @@ def file_renamer():
         file_name_rename = os.path.join(os.path.split(file_name_abs)[0], rename_published_at) + " " + video_id + rename_ext
         os.rename(file_name_abs, file_name_rename)
     except:
+        add_ingnore(file_name_abs)
         error_renamer = 1
 
 def channel_folder_creator():
@@ -61,54 +69,54 @@ def file_mover():
 
 def display():
     if error_renamer == 1:
-        message = str('{:s} Could not rename "{:s}," file "{:s}" already exists.'.format(
+        message = str('{:s} "{:s}" Could not rename.'.format(
             common.now_iso(2),
-            os.path.split(file_name_abs)[1],
-            os.path.split(file_name_rename)[1]
+            video_id
             )
         )
-        log_writer(message)
+        write_log(message)
         print(message)
         print("")
     elif error_creator == 1:
-        message = str('{:s} Could not create channel folder, file "{:s}" already exists. "{:s}" has been renamed as "{:s}."'.format(
+        message = str('{:s} "{:s}" Could not create folder "{:s}."'.format(
             common.now_iso(2),
-            channel_id,
-            os.path.split(file_name_abs)[1],
-            os.path.split(file_name_rename)[1]
-            )
-        )
-        log_writer(message)
-        print(message)
-        print("")
-    elif error_mover == 1:
-        message = str('{:s} Could not move "{:s}" to "{:s}", file with same name already exists there. "{:s}" has been renamed as "{:s}.'.format(
-            common.now_iso(2),
-            os.path.split(file_name_rename)[1],
-            channel_id,
-            os.path.split(file_name_abs)[1],
-            os.path.split(file_name_rename)[1]
-            )
-        )
-        log_writer(message)
-        print(message)
-        print("")
-    else:
-        message = str('{:s} Successfully. "{:s}" renamed as "{:s}" and moved to "{:s}."'.format(
-            common.now_iso(2),
-            os.path.split(file_name_abs)[1],
-            os.path.split(file_name_rename)[1],
+            video_id,
             channel_id
             )
         )
-        log_writer(message)
+        write_log(message)
+        print(message)
+        print("")
+    elif error_mover == 1:
+        message = str('{:s} "{:s}" Could not move file to "{:s}."'.format(
+            common.now_iso(2),
+            video_id,
+            channel_id
+            )
+        )
+        write_log(message)
+        print(message)
+        print("")
+    else:
+        message = str('{:s} "{:s}" Successfully. Destination folder: "{:s}."'.format(
+            common.now_iso(2),
+            video_id,
+            channel_id
+            )
+        )
+        write_log(message)
         print(message)
         print("")
 
-def log_writer(message):
+def write_log(message):
     writer = codecs.open("doc/log.txt", "a","utf-8")
     writer.write("%s\n" % message)
     writer.close()
+
+def add_ingnore(ident):
+    ignore_list.append(ident)
+    ignore_temp["ignore"] = ignore_list
+    common.write_json("ignore.json", ignore_temp)
 
 def main():
     global file_name_abs, video_id, channel_id, published_at
@@ -124,16 +132,20 @@ def main():
             pass
         else:
             for file_name_abs in file_name_list:
+                #print(ignore_list)
+                #print(common.read_json("ignore.json"))
                 video_id = os.path.split(file_name_abs)[1].split()[1]
                 if insertgs.video_exists(video_id) == 1:
-                    message = str('{:s} Video "{:s}" already exists.'.format(
-                        common.now_iso(2),
-                        video_id
+                    if file_name_abs not in ignore_temp["ignore"]:
+                        add_ingnore(file_name_abs)
+                        message = str('{:s} "{:s}" Video already exists.'.format(
+                            common.now_iso(2),
+                            video_id
+                            )
                         )
-                    )
-                    log_writer(message)
-                    print(message)
-                    print("")
+                        write_log(message)
+                        print(message)
+                        print("")
                 else:
                     error_apis = 0
                     try:
@@ -149,25 +161,30 @@ def main():
                     except:
                         error_apis = 2
                     if error_apis == 0:
-                        file_renamer()
-                        channel_folder_creator()
-                        file_mover()
-                        display()
+                        if file_name_abs not in ignore_temp["ignore"]:
+                            file_renamer()
+                            channel_folder_creator()
+                            file_mover()
+                            display()
                     elif error_apis == 1:
-                        message = str('{:s} Could not get video information of "{:s}."'.format(
-                            common.now_iso(2),           
-                            os.path.split(file_name_abs)[1]
+                        if file_name_abs not in ignore_temp["ignore"]:
+                            add_ingnore(file_name_abs)
+                            message = str('{:s} "{:s}" Could not get video information.'.format(
+                                common.now_iso(2),           
+                                video_id
+                                )
                             )
-                        )
-                        log_writer(message)
-                        print(message)
-                        print("")
+                            write_log(message)
+                            print(message)
+                            print("")
                     elif error_apis == 2:
-                        message = str('{:s} Could not insert video information of "{:s} to sheet."'.format(
-                            common.now_iso(2),           
-                            os.path.split(file_name_abs)[1]
+                        if file_name_abs not in ignore_temp["ignore"]:
+                            add_ingnore(file_name_abs)
+                            message = str('{:s} "{:s}" Could not insert video information to sheet.'.format(
+                                common.now_iso(2),           
+                                video_id
+                                )
                             )
-                        )
-                        log_writer(message)
-                        print(message)
-                        print("")
+                            write_log(message)
+                            print(message)
+                            print("")
