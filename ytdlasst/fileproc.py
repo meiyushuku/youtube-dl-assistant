@@ -2,7 +2,6 @@ import os
 import re
 import codecs
 import shutil
-import tempfile
 import getyt
 import common
 import insertgs
