@@ -38,7 +38,6 @@ def video_exists(video_id):
     except:
         video_exists = 0
     return video_exists
-'''
 
 def channel_exists(channel_id):
     try:
@@ -47,6 +46,7 @@ def channel_exists(channel_id):
     except:
         channel_exists = 0
     return channel_exists
+'''
 
 def insert_video(video_info_list, video_id, file_name_abs): # Catch video_info_list from fproc.
     insert_list = list()
