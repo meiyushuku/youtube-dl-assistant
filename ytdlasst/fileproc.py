@@ -2,6 +2,7 @@ import os
 import re
 import codecs
 import shutil
+import tempfile
 import getyt
 import common
 import insertgs
@@ -111,8 +112,7 @@ def log_writer(message):
     writer.close()
 
 def main():
-    global file_count, file_name_abs, video_id, channel_id, published_at
-    file_count = 0
+    global file_name_abs, video_id, channel_id, published_at
     dir_error = 0
     try:
         file_searcher()
@@ -120,19 +120,13 @@ def main():
         dir_error = 1
     if dir_error == 1:
         pass
-        #print("Directory error.")
     else:
-        #print("Working directory: %s" % path)
         if file_count_total == 0:
             pass
-            #print("No pending files.")
         else:
-            #print("Pending: %d" % file_count_total)
-            #input("Type here >>> ")
             for file_name_abs in file_name_list:
-                file_count += 1
                 video_id = os.path.split(file_name_abs)[1].split()[1]
-                if insertgs.exists(video_id) == 1:
+                if insertgs.video_exists(video_id) == 1:
                     message = str('{:s} Video "{:s}" already exists.'.format(
                         common.now_iso(2),
                         video_id
@@ -152,7 +146,7 @@ def main():
                         error_apis = 1
                     try:
                         if error_apis == 0:
-                            insertgs.insert(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
+                            insertgs.insert_video(video_info_list, video_id, file_name_abs) # Throw video_info_list to insertgs.
                     except:
                         error_apis = 2
                     if error_apis == 0:
