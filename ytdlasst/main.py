@@ -1,6 +1,8 @@
 import threading
 import time
 import sys
+import common
+import globalvar as glo
 from fileproc import main
 
 VERSION = "0.9.0"
@@ -22,5 +24,8 @@ def switch():
         return switch()
 '''
 
+ignore_temp = common.read_json("ignore.json")
+ignore_temp["ignore"] = ""
+common.write_json("ignore.json", ignore_temp)
 while True:
     main()
