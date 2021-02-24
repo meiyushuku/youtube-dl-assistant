@@ -25,9 +25,9 @@ def video_exists(video_id):
     video_info_url = DATABASE_API_URL + "?method=getVideoInfoByVideoId&site=YT&videoId=" + video_id
     response = requests.get(video_info_url)
     if json.loads(response.text):
-        video_exists = 0
+        video_exists = 0 # 1
     else:
-        video_exists = 0
+        video_exists = 0 # 0
     return video_exists
 
 '''
