@@ -9,7 +9,7 @@ YOUTUBE_API_KEY = confidentials["google"]["youtubeApiKey"]
 youtube = build(
     YOUTUBE_API_SERVICE_NAME,
     YOUTUBE_API_VERSION,
-    developerKey=YOUTUBE_API_KEY
+    developerKey = YOUTUBE_API_KEY
     )
 
 def get_video_info(video_id):
