@@ -23,11 +23,3 @@ def now_iso(rep): # ISO 8601
 	elif rep == 2:
 		time_return = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time()))
 	return time_return
-
-def write_temp(content):
-	with tempfile.NamedTemporaryFile("w+t") as tempf:
-		tempf.write(content)
-		tempf.seek(0)
-		content = tempf.read()
-		print(content)
-		print(tempf.name)
