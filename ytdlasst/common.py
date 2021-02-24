@@ -2,6 +2,7 @@ import os
 import time
 import json
 import codecs
+import tempfile
 
 def read_json(json_file_name):
 	with codecs.open(json_file_name, "rb", "utf-8") as json_file:
@@ -22,3 +23,11 @@ def now_iso(rep): # ISO 8601
 	elif rep == 2:
 		time_return = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time()))
 	return time_return
+
+def write_temp(content):
+	with tempfile.NamedTemporaryFile("w+t") as tempf:
+		tempf.write(content)
+		tempf.seek(0)
+		content = tempf.read()
+		print(content)
+		print(tempf.name)
