@@ -4,16 +4,9 @@ import json
 import codecs
 
 def read_json(json_file_name):
-	try:
-		with codecs.open(json_file_name, "rb", "utf-8") as json_file:
-			json_data = json.load(json_file)
-			return json_data
-	except:
-		print('"{:s}" with invalid JSON format.'.format(
-			os.path.split(json_file_name)[1]
-			)
-		)
-		return
+	with codecs.open(json_file_name, "rb", "utf-8") as json_file:
+		json_data = json.load(json_file)
+		return json_data
 
 def write_json(json_file_name, content):
 	with codecs.open(json_file_name, "w", "utf-8") as json_file:
