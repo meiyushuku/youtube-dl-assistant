@@ -14,11 +14,6 @@ print("youtube-dl-assistant")
 print("Version %s (2021) Developed by Meiyu Shuku" % VERSION)
 print("")
 
-def ignore_init():
-    ignore_init = {}
-    ignore_init["ignore"] = ""
-    common.write_json("doc/ignore.json", ignore_init)
-
 def check_config():
     try:
         config = common.read_json("doc/config.json")
@@ -34,6 +29,11 @@ def check_confidentials():
     except:
         confidentials_error = 1
     return confidentials_error
+
+def ignore_init():
+    ignore_init = {}
+    ignore_init["ignore"] = ""
+    common.write_json("doc/ignore.json", ignore_init)
 
 if os.path.isfile("doc/config.json"):
     if check_config() == 0:
