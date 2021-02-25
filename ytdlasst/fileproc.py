@@ -1,12 +1,10 @@
 import os
 import re
-import json
 import codecs
 import shutil
 
-from getyt import get_video_info
-
 import common
+from getyt import get_video_info
 import insertgs
 
 ignore_list = []
@@ -93,8 +91,7 @@ def add_ingnore(ident, ignore_temp):
     common.write_json("doc/ignore.json", ignore_temp)
 
 def main(work_dir, is_video):
-    with codecs.open("doc/ignore.json", "rb", "utf-8") as json_file:
-        ignore_temp = json.load(json_file)
+    ignore_temp = common.read_json("doc/ignore.json")
     for file in os.listdir(work_dir):
         if os.path.isfile(os.path.join(work_dir, file)):
             _ = file
@@ -118,16 +115,14 @@ def main(work_dir, is_video):
                                 error_apis = 0
                                 try:
                                     video_info_list = []
-                                    video_info_list = get_video_info(video_id) 
-                                    # Catch video_info_list from getyt.
+                                    video_info_list = get_video_info(video_id) # Catch video_info_list from getyt.
                                     channel_id = video_info_list[1]
                                     published_at = video_info_list[2]
                                 except:
                                     error_apis = 1
                                 try:
                                     if error_apis == 0:
-                                        insertgs.insert_video(video_info_list, video_id, file_name) 
-                                        # Throw video_info_list to insertgs.
+                                        insertgs.insert_video(video_info_list, video_id, file_name) # Throw video_info_list to insertgs.
                                 except:
                                     error_apis = 2
                                 if error_apis == 0:
