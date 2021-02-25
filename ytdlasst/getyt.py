@@ -13,7 +13,7 @@ youtube = build(
     )
 
 def get_video_info(video_id):
-    video_info_list = list()
+    video_info_list = []
     items = youtube.videos().list(
         part = "snippet, contentDetails",
         id = video_id
