@@ -1,7 +1,9 @@
 import os
 import json
+
 import common
-import requests
+
+import requests # pip install requests2
 from apiclient.discovery import build # pip install google-api-python-client
 
 def _getyt_init(confidentials):
@@ -47,9 +49,4 @@ def get_video_info(video_id):
     video_info_list.append(items["snippet"]["title"]) # 3
     video_info_list.append(items["snippet"]["description"]) # 4
     video_info_list.append(items["contentDetails"]["duration"]) # 5
-    return video_info_list 
-    # Throw video_info_list to fileproc.
-
-
-#video_id = "fUgf8g_w560"
-#print(get_video_info(video_id))
+    return video_info_list # Throw video_info_list to fileproc.
