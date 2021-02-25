@@ -1,31 +1,30 @@
 import threading
-import time
+import os
 import sys
+import time
 import common
-import globalvar as glo
 from fileproc import main
 
+def ignore_init():
+    ignore_init = {}
+    ignore_init["ignore"] = ""
+    common.write_json("doc/ignore.json", ignore_init)
+
 VERSION = "0.9.0"
-print("youtube-dl-assistant-private")
+print("youtube-dl-assistant")
 print("Version %s (2021) Developed by Meiyu Shuku" % VERSION)
 print("")
+print("Loading...")
+print("")
 
-'''
-def switch():
-    input_menu_orig = input("Type here >>> ")
-    input_menu = input_menu_orig.strip()
-    if input_menu == "exit":
-        sys.exit()
-    elif input_menu == "":
-        print("Not entered.")
-        return switch()
-    else:
-        print("Command is not defined.")
-        return switch()
-'''
+config = common.read_json("doc/config.json")
+work_dir = config["general"]["workDir"]
+is_video = config["general"]["isVideo"]
 
-ignore_temp = common.read_json("ignore.json")
-ignore_temp["ignore"] = ""
-common.write_json("ignore.json", ignore_temp)
-while True:
-    main()
+if os.path.isdir(work_dir):
+    ignore_init()
+    while True:
+        main(work_dir, is_video)
+else:
+    print("dir_error")
+    input()
