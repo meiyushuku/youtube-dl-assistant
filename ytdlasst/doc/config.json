@@ -1,7 +1,7 @@
 {
     "general": {
-        "workDir": "D:/Dropbox/Workspace/Programming/sharetestspace/desktop",
         "user": "shuku",
-        "isVideo": [".mkv", ".mp4"]
+        "isVideo": [".mkv", ".mp4"],
+        "workDir": "D:/Dropbox/Workspace/Programming/sharetestspace/desktop"
     }
 }
