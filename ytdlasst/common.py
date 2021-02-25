@@ -19,7 +19,7 @@ def make_dir(path):
 
 def now_iso(rep): # ISO 8601
 	if rep == 1:
-		time_return = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time()))
+		time_ = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(time.time()))
 	elif rep == 2:
-		time_return = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time()))
-	return time_return
+		time_ = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time()))
+	return time_
