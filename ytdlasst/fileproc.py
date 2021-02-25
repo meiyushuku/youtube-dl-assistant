@@ -1,20 +1,23 @@
 import os
 import re
+import json
 import codecs
 import shutil
-import getyt
+
+from getyt import get_video_info
+
 import common
 import insertgs
 
 ignore_list = []
 
-def rename_file(file_name, published_at, video_id, ignore_temp):
+def rename_file(file_name, work_dir, published_at, video_id, ignore_temp):
     global error_renamer, file_name_rename
     error_renamer = 0
     try:
-        rename_published_at = re.sub("[-:]", "", published_at)
-        rename_ext = os.path.splitext(file_name)[1]
-        file_name_rename = os.path.join(os.path.split(file_name)[0], rename_published_at) + " " + video_id + rename_ext
+        published_at_iso_basic = re.sub("[-:]", "", published_at)
+        ext = os.path.splitext(file_name)[1]
+        file_name_rename = os.path.join(work_dir, published_at_iso_basic) + " " + video_id + ext
         os.rename(file_name, file_name_rename)
     except:
         add_ingnore(file_name, ignore_temp)
@@ -90,14 +93,15 @@ def add_ingnore(ident, ignore_temp):
     common.write_json("doc/ignore.json", ignore_temp)
 
 def main(work_dir, is_video):
-    ignore_temp = common.read_json("doc/ignore.json")
+    with codecs.open("doc/ignore.json", "rb", "utf-8") as json_file:
+        ignore_temp = json.load(json_file)
     for file in os.listdir(work_dir):
         if os.path.isfile(os.path.join(work_dir, file)):
             _ = file
             file_name = os.path.join(work_dir, _)
             file_size = os.path.getsize(file_name)
             if file_size != 0:
-                if str(os.path.splitext(file_name)[1]).lower() in is_video:
+                if os.path.splitext(file_name)[1].lower() in is_video:
                     if _.split()[0] == "youtube-dl":
                         if file_name not in ignore_temp["ignore"]:
                             video_id = os.path.split(file_name)[1].split()[1]
@@ -114,18 +118,20 @@ def main(work_dir, is_video):
                                 error_apis = 0
                                 try:
                                     video_info_list = []
-                                    video_info_list = getyt.get_video_info(video_id) # Catch video_info_list from getyt.
+                                    video_info_list = get_video_info(video_id) 
+                                    # Catch video_info_list from getyt.
                                     channel_id = video_info_list[1]
                                     published_at = video_info_list[2]
                                 except:
                                     error_apis = 1
                                 try:
                                     if error_apis == 0:
-                                        insertgs.insert_video(video_info_list, video_id, file_name) # Throw video_info_list to insertgs.
+                                        insertgs.insert_video(video_info_list, video_id, file_name) 
+                                        # Throw video_info_list to insertgs.
                                 except:
                                     error_apis = 2
                                 if error_apis == 0:
-                                    rename_file(file_name, published_at, video_id, ignore_temp)
+                                    rename_file(file_name, work_dir, published_at, video_id, ignore_temp)
                                     create_channel_folder(work_dir, channel_id)
                                     move_file(work_dir, channel_id)
                                     display(video_id, channel_id)
