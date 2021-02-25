@@ -1,16 +1,35 @@
+import os
+import json
 import common
+import requests
 from apiclient.discovery import build # pip install google-api-python-client
 
-confidentials = common.read_json("doc/confidentials.json")
-
-YOUTUBE_API_SERVICE_NAME = "youtube"
-YOUTUBE_API_VERSION = "v3"
-YOUTUBE_API_KEY = confidentials["google"]["youtubeApiKey"]
-youtube = build(
-    YOUTUBE_API_SERVICE_NAME,
-    YOUTUBE_API_VERSION,
-    developerKey = YOUTUBE_API_KEY
-    )
+def _getyt_init(confidentials):
+    global youtube
+    if "youtubeApiKey" in str(confidentials):
+        if confidentials["google"]["youtubeApiKey"] != "":
+            YOUTUBE_API_KEY = confidentials["google"]["youtubeApiKey"]
+            TEST_URL = "https://www.googleapis.com/youtube/v3/videos?key=" + YOUTUBE_API_KEY
+            resp = requests.get(TEST_URL)
+            if json.loads(resp.text)["error"]["errors"][0]["reason"] != "badRequest":
+                youtube = build(
+                    "youtube", # YOUTUBE_API_SERVICE_NAME
+                    "v3", # YOUTUBE_API_VERSION
+                    developerKey = YOUTUBE_API_KEY
+                    )
+                return True
+            else:
+                print("API key not valid.")
+                input()
+                return False
+        else:
+            print("API key must be supplied.")
+            input()
+            return False
+    else:
+        print('Object "youtubeApiKey" not found in "confidentials.json."')
+        input()
+        return False
 
 def get_video_info(video_id):
     video_info_list = []
@@ -28,4 +47,9 @@ def get_video_info(video_id):
     video_info_list.append(items["snippet"]["title"]) # 3
     video_info_list.append(items["snippet"]["description"]) # 4
     video_info_list.append(items["contentDetails"]["duration"]) # 5
-    return video_info_list # Throw video_info_list to fileproc.
+    return video_info_list 
+    # Throw video_info_list to fileproc.
+
+
+#video_id = "fUgf8g_w560"
+#print(get_video_info(video_id))
