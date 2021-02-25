@@ -1,32 +1,36 @@
 import os
 import re
 import json
-import requests
+
 import common
+
+import requests # pip install requests2
 import gspread # pip install gspread
 from oauth2client.service_account import ServiceAccountCredentials # pip install oauth2client
 
-#def _insertgs_init():
-config = common.read_json("doc/config.json")
-confidentials = common.read_json("doc/confidentials.json")
-
-USER = config["general"]["user"]
-SHEET_KEY_FILE = confidentials["google"]["sheetKeyFile"]
-SHEET_ID = confidentials["google"]["sheetId"]
-SCOPE = "https://spreadsheets.google.com/feeds"
-
-DATABASE_API_URL = confidentials["google"]["databeseApiUrl"]
-
-cert = ServiceAccountCredentials.from_json_keyfile_name(SHEET_KEY_FILE, SCOPE)
-client = gspread.authorize(cert)
-sheet1 = client.open_by_key(SHEET_ID).get_worksheet(0) # channelInfo
-sheet2 = client.open_by_key(SHEET_ID).get_worksheet(1) # videoInfo
+def _insertgs_init(config, confidentials):
+    global USER, DATABASE_API_URL, sheet1, sheet2
+    try:
+        USER = config["general"]["user"]
+        SHEET_KEY_FILE = confidentials["google"]["sheetKeyFile"]
+        SHEET_ID = confidentials["google"]["sheetId"]
+        SCOPE = "https://spreadsheets.google.com/feeds"
+        DATABASE_API_URL = confidentials["google"]["databeseApiUrl"]
+        cert = ServiceAccountCredentials.from_json_keyfile_name(SHEET_KEY_FILE, SCOPE)
+        client = gspread.authorize(cert)
+        sheet1 = client.open_by_key(SHEET_ID).get_worksheet(0) # channelInfo
+        sheet2 = client.open_by_key(SHEET_ID).get_worksheet(1) # videoInfo
+        return True
+    except:
+        print("Error")
+        input()
+        return False
 
 def video_exists(video_id):
     video_info_url = DATABASE_API_URL + "?method=getVideoInfoByVideoId&site=YT&videoId=" + video_id
     response = requests.get(video_info_url)
     if json.loads(response.text):
-        video_exists = 0 # 1
+        video_exists = 1 # 1
     else:
         video_exists = 0 # 0
     return video_exists
@@ -49,8 +53,7 @@ def channel_exists(channel_id):
     return channel_exists
 '''
 
-def insert_video(video_info_list, video_id, file_name_abs): 
-    # Catch video_info_list from fileproc.
+def insert_video(video_info_list, video_id, file_name_abs): # Catch video_info_list from fileproc.
     insert_list = list()
     insert_list.append("YT") # site
     insert_list.append(video_info_list[1]) # channelId
