@@ -2,12 +2,18 @@ import os
 import time
 import json
 import codecs
-import tempfile
 
 def read_json(json_file_name):
-	with codecs.open(json_file_name, "rb", "utf-8") as json_file:
-		json_data = json.load(json_file)
-	return json_data
+	try:
+		with codecs.open(json_file_name, "rb", "utf-8") as json_file:
+			json_data = json.load(json_file)
+			return json_data
+	except:
+		print('"{:s}" with invalid JSON format.'.format(
+			os.path.split(json_file_name)[1]
+			)
+		)
+		return
 
 def write_json(json_file_name, content):
 	with codecs.open(json_file_name, "w", "utf-8") as json_file:
