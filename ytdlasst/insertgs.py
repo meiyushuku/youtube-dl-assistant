@@ -10,19 +10,44 @@ from oauth2client.service_account import ServiceAccountCredentials # pip install
 
 def _insertgs_init(config, confidentials):
     global USER, DATABASE_API_URL, sheet1, sheet2
-    try:
-        USER = config["general"]["user"]
-        SHEET_KEY_FILE = confidentials["google"]["sheetKeyFile"]
-        SHEET_ID = confidentials["google"]["sheetId"]
-        SCOPE = "https://spreadsheets.google.com/feeds"
-        DATABASE_API_URL = confidentials["google"]["databeseApiUrl"]
-        cert = ServiceAccountCredentials.from_json_keyfile_name(SHEET_KEY_FILE, SCOPE)
-        client = gspread.authorize(cert)
-        sheet1 = client.open_by_key(SHEET_ID).get_worksheet(0) # channelInfo
-        sheet2 = client.open_by_key(SHEET_ID).get_worksheet(1) # videoInfo
-        return True
-    except:
-        print("Error")
+    if "user" in str(config):
+        if "sheetKeyFile" in str(confidentials):
+            if "sheetId" in str(confidentials):
+                if confidentials["google"]["sheetKeyFile"] != "":
+                    if confidentials["google"]["sheetId"] != "":
+                        USER = config["general"]["user"]
+                        SHEET_KEY_FILE = confidentials["google"]["sheetKeyFile"]
+                        SHEET_ID = confidentials["google"]["sheetId"]
+                        SCOPE = "https://spreadsheets.google.com/feeds"
+                        DATABASE_API_URL = confidentials["google"]["databeseApiUrl"]
+                        if os.path.isfile(SHEET_KEY_FILE):
+                            cert = ServiceAccountCredentials.from_json_keyfile_name(SHEET_KEY_FILE, SCOPE)
+                            client = gspread.authorize(cert)
+                            sheet1 = client.open_by_key(SHEET_ID).get_worksheet(0) # channelInfo
+                            sheet2 = client.open_by_key(SHEET_ID).get_worksheet(1) # videoInfo
+                            return True
+                        else:
+                            print('"%s" not found.' % os.path.split(SHEET_KEY_FILE)[1])
+                            input()
+                            return False
+                    else:
+                        print("Sheet ID must be supplied.")
+                        input()
+                        return False
+                else:
+                    print("Sheet key file must be supplied.")
+                    input()
+                    return False
+            else:
+                print('Object "sheetId" not found in "confidentials.json."')
+                input()
+                return False
+        else:
+            print('Object "sheetKeyFile" not found in "confidentials.json."')
+            input()
+            return False
+    else:
+        print('Object "user" not found in "config.json."')
         input()
         return False
 
