@@ -24,7 +24,7 @@ def check_config():
 
 def check_confidentials():
     try:
-        confidentials = common.read_json("doc/confidentials.json.")
+        confidentials = common.read_json("doc/confidentials.json")
         confidentials_error = 0
     except:
         confidentials_error = 1
@@ -37,10 +37,10 @@ def ignore_init():
 
 if os.path.isfile("doc/config.json"):
     if check_config() == 0:
-        if os.path.isfile("doc/confidentials.json."):
+        if os.path.isfile("doc/confidentials.json"):
             if check_confidentials() == 0:
                 config = common.read_json("doc/config.json")
-                confidentials = common.read_json("doc/confidentials.json.")
+                confidentials = common.read_json("doc/confidentials.json")
                 work_dir = config["general"]["workDir"]
                 is_video = config["general"]["isVideo"]
                 if os.path.isdir(work_dir):
