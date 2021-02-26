@@ -23,15 +23,12 @@ def _getyt_init(confidentials):
             else:
                 print("API key not valid.")
                 input()
-                return False
         else:
             print("API key must be supplied.")
             input()
-            return False
     else:
         print('Object "youtubeApiKey" not found in "confidentials.json."')
         input()
-        return False
 
 def get_video_info(video_id):
     video_info_list = []
