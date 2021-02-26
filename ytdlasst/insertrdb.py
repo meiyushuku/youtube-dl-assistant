@@ -4,7 +4,7 @@ import common
 
 import mysql.connector as mydb # pip install mysql-connector-python
 
-def createMysqlConnecter():
+def connect():
   # DB接続に失敗した場合の例外対策
   try:
     resconn = mydb.connect(
@@ -19,10 +19,10 @@ def createMysqlConnecter():
     print('[DB Connection Error]', e)
     sys.exit(1) # プログラムをエラー終了
   # 接続が切れた場合に自動的に再接続する
-  resconn.ping(reconnect=True)
+  resconn.ping(reconnect = True)
   return resconn
 
-def insertData(_conn, _query):
+def insert_data(_conn, _query):
     # INSERTのクエリかどうかを判別
     if _query.split(' ')[0].upper() != 'INSERT':
         print('[INSERT Error] Query is not insert.', _query)
@@ -38,8 +38,8 @@ def insertData(_conn, _query):
 
 confidentials = common.read_json("doc/confidentials.json")
 
-conn = createMysqlConnecter()
-channelId = "12545645377"
-insertSql = '''INSERT INTO channelInfo(site,channelId,channelName,isOfficial,count
-) VALUES ("YT","{:s}","123","1","20")'''.format(channelId)
-insertData(conn, insertSql)
+conn = connect()
+channel_id = "125499995645377"
+insert_sql = '''INSERT INTO channelInfo(site,channelId,channelName,isOfficial,count
+) VALUES ("YT","{:s}","123","1","20")'''.format(channel_id)
+insert_data(conn, insert_sql)
