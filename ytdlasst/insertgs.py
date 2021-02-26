@@ -29,27 +29,21 @@ def _insertgs_init(config, confidentials):
                         else:
                             print('"%s" not found.' % os.path.split(SHEET_KEY_FILE)[1])
                             input()
-                            return False
                     else:
                         print("Sheet ID must be supplied.")
                         input()
-                        return False
                 else:
                     print("Sheet key file must be supplied.")
                     input()
-                    return False
             else:
                 print('Object "sheetId" not found in "confidentials.json."')
                 input()
-                return False
         else:
             print('Object "sheetKeyFile" not found in "confidentials.json."')
             input()
-            return False
     else:
         print('Object "user" not found in "config.json."')
         input()
-        return False
 
 def video_exists(video_id):
     video_info_url = DATABASE_API_URL + "?method=getVideoInfoByVideoId&site=YT&videoId=" + video_id
