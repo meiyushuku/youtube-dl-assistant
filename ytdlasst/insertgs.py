@@ -13,13 +13,13 @@ def _insertgs_init(config, confidentials):
     if "user" in str(config):
         if "sheetKeyFile" in str(confidentials):
             if "sheetId" in str(confidentials):
-                if confidentials["google"]["sheetKeyFile"] != "":
-                    if confidentials["google"]["sheetId"] != "":
+                if confidentials["insertGs"]["sheetKeyFile"] != "":
+                    if confidentials["insertGs"]["sheetId"] != "":
                         USER = config["general"]["user"]
-                        SHEET_KEY_FILE = confidentials["google"]["sheetKeyFile"]
-                        SHEET_ID = confidentials["google"]["sheetId"]
+                        SHEET_KEY_FILE = confidentials["insertGs"]["sheetKeyFile"]
+                        SHEET_ID = confidentials["insertGs"]["sheetId"]
                         SCOPE = "https://spreadsheets.google.com/feeds"
-                        DATABASE_API_URL = confidentials["google"]["databeseApiUrl"]
+                        DATABASE_API_URL = confidentials["insertGs"]["databeseApiUrl"]
                         if os.path.isfile(SHEET_KEY_FILE):
                             cert = ServiceAccountCredentials.from_json_keyfile_name(SHEET_KEY_FILE, SCOPE)
                             client = gspread.authorize(cert)
