@@ -8,11 +8,11 @@ def createMysqlConnecter():
   # DB接続に失敗した場合の例外対策
   try:
     resconn = mydb.connect(
-      host = confidentials["insertrdb"]["host"],
-      port = confidentials["insertrdb"]["port"],
-      user = confidentials["insertrdb"]["user"],
-      password = confidentials["insertrdb"]["password"],
-      database = confidentials["insertrdb"]["database"]
+      host = confidentials["insertRdb"]["host"],
+      port = confidentials["insertRdb"]["port"],
+      user = confidentials["insertRdb"]["user"],
+      password = confidentials["insertRdb"]["password"],
+      database = confidentials["insertRdb"]["database"]
     )
     print("conn successfully")
   except Exception as e:
