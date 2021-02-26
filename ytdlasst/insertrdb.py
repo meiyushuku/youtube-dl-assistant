@@ -62,7 +62,7 @@ def insert_video_info():
         user,
         lastUpdate,
         extension
-        ) VALUES ("{:s}", "{:s}", "{:s}", "{:s}", "{:s}")'''.format(
+        ) VALUES ("{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}")'''.format(
             123
             )
     insert_data(conn, insert_sql)
