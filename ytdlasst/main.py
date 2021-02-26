@@ -44,9 +44,7 @@ if os.path.isfile("doc/config.json"):
                 work_dir = config["general"]["workDir"]
                 is_video = config["general"]["isVideo"]
                 if os.path.isdir(work_dir):
-                    _getyt_init(confidentials)
                     if _getyt_init(confidentials) == True:
-                        _insertgs_init(config, confidentials)
                         if _insertgs_init(config, confidentials) == True:
                             ignore_init()
                             while True:
@@ -66,3 +64,5 @@ if os.path.isfile("doc/config.json"):
 else:
     print('"config.json" not found.')
     input()
+
+sys.exit()
