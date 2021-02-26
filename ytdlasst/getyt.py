@@ -9,8 +9,8 @@ from apiclient.discovery import build # pip install google-api-python-client
 def _getyt_init(confidentials):
     global youtube
     if "youtubeApiKey" in str(confidentials):
-        if confidentials["google"]["youtubeApiKey"] != "":
-            YOUTUBE_API_KEY = confidentials["google"]["youtubeApiKey"]
+        if confidentials["getYt"]["youtubeApiKey"] != "":
+            YOUTUBE_API_KEY = confidentials["getYt"]["youtubeApiKey"]
             TEST_URL = "https://www.googleapis.com/youtube/v3/videos?key=" + YOUTUBE_API_KEY
             resp = requests.get(TEST_URL)
             if json.loads(resp.text)["error"]["errors"][0]["reason"] != "badRequest":
