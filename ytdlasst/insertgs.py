@@ -49,7 +49,7 @@ def video_exists(video_id):
     video_info_url = DATABASE_API_URL + "?method=getVideoInfoByVideoId&site=YT&videoId=" + video_id
     response = requests.get(video_info_url)
     if json.loads(response.text):
-        video_exists = 1 # 1
+        video_exists = 0 # 1
     else:
         video_exists = 0 # 0
     return video_exists
@@ -72,19 +72,19 @@ def channel_exists(channel_id):
     return channel_exists
 '''
 
-def insert_video(video_info_list, video_id, file_name_abs): # Catch video_info_list from fileproc.
+def insert_video(video_info_list, file_name): # Catch video_info_list from fileproc.
     insert_list = list()
     insert_list.append("YT") # site
     insert_list.append(video_info_list[1]) # channelId
     insert_list.append(video_info_list[2]) # publishedAt
-    insert_list.append(video_id) # videoId
-    insert_list.append(video_info_list[3]) # title
-    insert_list.append(json.dumps(video_info_list[4], ensure_ascii = False)) # description
+    insert_list.append(video_info_list[3]) # videoId
+    insert_list.append(video_info_list[4]) # title
+    insert_list.append(json.dumps(video_info_list[5], ensure_ascii = False)) # description
     insert_list.append("") # customDescription
-    insert_list.append(video_info_list[5]) # duration
+    insert_list.append(video_info_list[6]) # duration
     insert_list.append(USER) # user
     insert_list.append(common.now_iso(2)) # lastUpdate
-    insert_list.append(re.sub("[.]", "", os.path.splitext(file_name_abs)[1])) # extension
+    insert_list.append(re.sub("[.]", "", os.path.splitext(file_name)[1])) # extension
     sheet2.append_row(insert_list, table_range = "A:A")
 
 #def insert_channel():
