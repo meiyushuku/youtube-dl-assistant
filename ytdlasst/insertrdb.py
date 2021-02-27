@@ -36,7 +36,7 @@ def insert_data(_conn, _query):
         sys.exit(1)
 
 def select_data(_conn, _query):
-    if _query.split(" ")[0].upper() != "SELECT":
+    if _query.split()[0].upper() != "SELECT":
         print("[SELECT Error] Query is not select.", _query)
         sys.exit(1)
     cur = _conn.cursor()
@@ -45,7 +45,7 @@ def select_data(_conn, _query):
         cur.execute(_query)
         res = cur.fetchall()
     except Exception as e:
-        print('[Select Data Error]', e)
+        print("[Select Data Error]", e)
     return res
 
 def video_exists(video_id):
