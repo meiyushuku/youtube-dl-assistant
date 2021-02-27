@@ -49,7 +49,7 @@ def video_exists(video_id):
     video_info_url = DATABASE_API_URL + "?method=getVideoInfoByVideoId&site=YT&videoId=" + video_id
     response = requests.get(video_info_url)
     if json.loads(response.text):
-        video_exists = 0 # 1
+        video_exists = 1 # 1
     else:
         video_exists = 0 # 0
     return video_exists
@@ -83,7 +83,7 @@ def insert_video(video_info_list, file_name): # Catch video_info_list from filep
     insert_list.append("") # customDescription
     insert_list.append(video_info_list[6]) # duration
     insert_list.append(USER) # user
-    insert_list.append(common.now_iso(2)) # lastUpdate
+    insert_list.append(common.now(2)) # lastUpdate
     insert_list.append(re.sub("[.]", "", os.path.splitext(file_name)[1])) # extension
     sheet2.append_row(insert_list, table_range = "A:A")
 
