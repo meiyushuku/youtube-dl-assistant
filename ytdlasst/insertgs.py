@@ -72,7 +72,7 @@ def channel_exists(channel_id):
     return channel_exists
 '''
 
-def insert_video(video_info_list, file_name): # Catch video_info_list from fileproc.
+def insert_video_info(video_info_list, file_name): # Catch video_info_list from fileproc.
     insert_list = list()
     insert_list.append("YT") # site
     insert_list.append(video_info_list[1]) # channelId
