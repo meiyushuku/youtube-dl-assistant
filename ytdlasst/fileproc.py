@@ -6,6 +6,7 @@ import shutil
 import common
 from getyt import get_video_info
 import insertgs
+import insertrdb
 
 ignore_list = []
 
@@ -122,7 +123,8 @@ def main(work_dir, is_video):
                                     error_apis = 1
                                 try:
                                     if error_apis == 0:
-                                        insertgs.insert_video(video_info_list, video_id, file_name) # Throw video_info_list to insertgs.
+                                        insertgs.insert_video(video_info_list, file_name) # Throw video_info_list to insertgs.
+                                        insertrdb.insert_video_info(video_info_list, file_name)
                                 except:
                                     error_apis = 2
                                 if error_apis == 0:
