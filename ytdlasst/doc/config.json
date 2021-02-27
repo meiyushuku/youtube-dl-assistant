@@ -1,0 +1,7 @@
+{
+    "general": {
+        "user": "shuku",
+        "isVideo": [".mkv", ".mp4"],
+        "workDir": "C:/Users/meiyu/Downloads/youtube-dl/mkv"
+    }
+}
