@@ -1,9 +1,5 @@
-cmd.txt
-insertAndRename.go
-memo.txt
-config.conf
-log.txt
-*.csv
 *.pyc
-config.json
-extreme-lodge-299820-5600f220b0d2.json
+ytdlasst/data/resp/yt/v/*.json
+ytdlasst/doc/log.txt
+ytdlasst/doc/confidentials.json
+ytdlasst/doc/extreme-lodge-??????-????????????.json
