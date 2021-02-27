@@ -47,7 +47,7 @@ def move_file(work_dir, channel_id):
 def display(video_id, channel_id):
     if error_renamer == 1:
         message = str('{:s} [FILE] "{:s}" Could not rename.'.format(
-            common.now_iso(2),
+            common.now(2),
             video_id
             )
         )
@@ -55,7 +55,7 @@ def display(video_id, channel_id):
         print(message)
     elif error_creator == 1:
         message = str('{:s} [FILE] "{:s}" Could not create folder "{:s}."'.format(
-            common.now_iso(2),
+            common.now(2),
             video_id,
             channel_id
             )
@@ -64,7 +64,7 @@ def display(video_id, channel_id):
         print(message)
     elif error_mover == 1:
         message = str('{:s} [FILE] "{:s}" Could not move file to "{:s}."'.format(
-            common.now_iso(2),
+            common.now(2),
             video_id,
             channel_id
             )
@@ -73,7 +73,7 @@ def display(video_id, channel_id):
         print(message)
     else:
         message = str('{:s} [FILE] "{:s}" Successfully. Destination folder: "{:s}."'.format(
-            common.now_iso(2),
+            common.now(2),
             video_id,
             channel_id
             )
@@ -103,10 +103,10 @@ def main(work_dir, is_video):
                     if _.split()[0] == "youtube-dl":
                         if file_name not in ignore_temp["ignore"]:
                             video_id = os.path.split(file_name)[1].split()[1]
-                            if insertgs.video_exists(video_id) == 1:
+                            if insertrdb.video_exists(video_id) == 1:
                                 add_ingnore(file_name, ignore_temp)
                                 message = str('{:s} [FILE] "{:s}" Video already exists.'.format(
-                                    common.now_iso(2),
+                                    common.now(2),
                                     video_id
                                     )
                                 )
@@ -123,7 +123,7 @@ def main(work_dir, is_video):
                                     error_apis = 1
                                 try:
                                     if error_apis == 0:
-                                        insertgs.insert_video(video_info_list, file_name) # Throw video_info_list to insertgs.
+                                        #insertgs.insert_video(video_info_list, file_name) # Throw video_info_list to insertgs.
                                         insertrdb.insert_video_info(video_info_list, file_name)
                                 except:
                                     error_apis = 2
@@ -135,7 +135,7 @@ def main(work_dir, is_video):
                                 elif error_apis == 1:
                                     add_ingnore(file_name, ignore_temp)
                                     message = str('{:s} [FILE] "{:s}" Could not get video information.'.format(
-                                        common.now_iso(2),           
+                                        common.now(2),           
                                         video_id
                                         )
                                     )
@@ -144,7 +144,7 @@ def main(work_dir, is_video):
                                 elif error_apis == 2:
                                     add_ingnore(file_name, ignore_temp)
                                     message = str('{:s} [FILE] "{:s}" Could not insert video information to sheet.'.format(
-                                        common.now_iso(2),           
+                                        common.now(2),           
                                         video_id
                                         )
                                     )
