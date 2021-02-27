@@ -123,7 +123,7 @@ def main(work_dir, is_video):
                                     error_apis = 1
                                 try:
                                     if error_apis == 0:
-                                        #insertgs.insert_video(video_info_list, file_name) # Throw video_info_list to insertgs.
+                                        #insertgs.insert_video_info(video_info_list, file_name) # Throw video_info_list to insertgs.
                                         insertrdb.insert_video_info(video_info_list, file_name)
                                 except:
                                     error_apis = 2
