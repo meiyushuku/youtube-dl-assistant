@@ -52,7 +52,7 @@ def video_exists(video_id):
     select_sql = '''SELECT 1 FROM videoInfo WHERE videoId = "{}" LIMIT 1'''.format(video_id)
     res = select_data(conn, select_sql)
     if "1" in str(res):
-        video_exists = 1 # 1
+        video_exists = 0 # 1
     else:
         video_exists = 0 # 0
     return video_exists
@@ -70,7 +70,7 @@ def insert_video_info(video_info_list, file_name):
         duration,
         user,
         created,
-        updated,
+        modified,
         extension
         ) VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'''.format(
             "YT", # site
