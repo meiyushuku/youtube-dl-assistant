@@ -7,9 +7,6 @@ import common
 
 import mysql.connector as mydb # pip install mysql-connector-python
 
-from getyt import get_video_info
-from getyt import _getyt_init
-
 def connect():
     try:
         conn = mydb.connect(
@@ -39,20 +36,30 @@ def insert_data(_conn, _query):
         _conn.rollback()
         sys.exit(1)
 
-def insert_channel_info():
-    channel_id = common.now_iso(1)
-    insert_sql = '''INSERT INTO channelInfo(
-        site,
-        channelId,
-        channelName,
-        isOfficial,
-        count
-        ) VALUES ("YT", "{:s}", "123", "1", "20")'''.format(
-            channel_id
-            )
-    insert_data(conn, insert_sql)
+def select_data(_conn, _query):
+    if _query.split(" ")[0].upper() != "SELECT":
+        print("[SELECT Error] Query is not select.", _query)
+        sys.exit(1)
+    cur = _conn.cursor()
+    res = []
+    try:
+        cur.execute(_query)
+        res = cur.fetchall()
+    except Exception as e:
+        print('[Select Data Error]', e)
+    return res
+
+def video_exists(video_id):
+    select_sql = '''SELECT 1 FROM videoInfo WHERE videoId = "{}" LIMIT 1'''.format(video_id)
+    res = select_data(conn, select_sql)
+    if "1" in str(res):
+        video_exists = 1 # 1
+    else:
+        video_exists = 0 # 0
+    return video_exists
 
 def insert_video_info(video_info_list, file_name):
+    _ = video_info_list[2]
     insert_sql = '''INSERT INTO videoInfo(
         site,
         channelId,
@@ -63,33 +70,25 @@ def insert_video_info(video_info_list, file_name):
         customDescription,
         duration,
         user,
+        created,
+        updated,
         extension
-        ) VALUES ("{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}", "{:s}")'''.format(
-            "YT",
-            video_info_list[1],
-            video_info_list[2],
-            video_info_list[3],
-            video_info_list[4],
-            video_info_list[5],
-            "",
-            video_info_list[6],
-            config["general"]["user"],
-            #common.now_iso(2),
-            re.sub("[.]", "", os.path.splitext(file_name)[1])
+        ) VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'''.format(
+            "YT", # site
+            video_info_list[1], # channelId
+            _.translate(_.maketrans("T", " ", "Z")), # publishedAt
+            video_info_list[3], # videoId
+            video_info_list[4], # title
+            video_info_list[5], # description
+            "", # customDescription
+            common.d2s(video_info_list[6]), # duration
+            config["general"]["user"], # user
+            common.now(3),
+            common.now(3),
+            re.sub("[.]", "", os.path.splitext(file_name)[1]) # extension
             )
     insert_data(conn, insert_sql)
-
 
 confidentials = common.read_json("doc/confidentials.json")
 config = common.read_json("doc/config.json")
 conn = connect()
-
-'''
-video_id = "fKp66a5MCco"
-file_name = "D:/123\\youtube-dl fKp66a5MCco 248 乃木坂46掛橋沙耶香、衣装脱ぎ捨てボクサーに！岡山出身の4期生がCM単独初出演　鋭いパンチ連発！.mkv"
-
-_getyt_init(confidentials)
-video_info_list = []
-video_info_list = get_video_info(video_id)
-insert_video_info(video_info_list, file_name)
-'''
