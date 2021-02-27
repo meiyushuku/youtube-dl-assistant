@@ -43,7 +43,8 @@ def get_video_info(video_id):
     video_info_list.append(items["snippet"]["channelTitle"]) # 0
     video_info_list.append(items["snippet"]["channelId"]) # 1
     video_info_list.append(items["snippet"]["publishedAt"]) # 2
-    video_info_list.append(items["snippet"]["title"]) # 3
-    video_info_list.append(items["snippet"]["description"]) # 4
-    video_info_list.append(items["contentDetails"]["duration"]) # 5
+    video_info_list.append(items["id"]) # 3
+    video_info_list.append(items["snippet"]["title"]) # 4
+    video_info_list.append(items["snippet"]["description"]) # 5
+    video_info_list.append(items["contentDetails"]["duration"]) # 6
     return video_info_list # Throw video_info_list to fileproc.
