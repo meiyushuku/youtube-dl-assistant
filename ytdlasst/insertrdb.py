@@ -49,42 +49,65 @@ def select_data(_conn, _query):
     return res
 
 def video_exists(video_id):
-    select_sql = '''SELECT 1 FROM videoInfo WHERE videoId = "{}" LIMIT 1'''.format(video_id)
+    select_sql = '''SELECT 1 FROM `video_info` WHERE `video_id` = "{}" LIMIT 1'''.format(video_id)
     res = select_data(conn, select_sql)
-    if "1" in str(res):
-        video_exists = 0 # 1
+    if res:
+        video_exists = 1 # 1
     else:
         video_exists = 0 # 0
     return video_exists
 
+def channel_exists(channel_id):
+    select_sql = '''SELECT 1 FROM `channel_info` WHERE `channel_id` = "{}" LIMIT 1'''.format(channel_id)
+    res = select_data(conn, select_sql)
+    if res:
+        channel_exists = 1 # 1
+    else:
+        channel_exists = 0 # 0
+    return channel_exists
+
 def insert_video_info(video_info_list, file_name):
     _ = video_info_list[2]
-    insert_sql = '''INSERT INTO videoInfo(
+    insert_sql = '''INSERT INTO `video_info`(
         site,
-        channelId,
-        publishedAt,
-        videoId,
+        channel_id,
+        published_at,
+        video_id,
         title,
         description,
-        customDescription,
+        custom_description,
         duration,
         user,
-        created,
-        modified,
+        created_at,
+        modified_at,
         extension
         ) VALUES ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")'''.format(
             "YT", # site
-            video_info_list[1], # channelId
-            _.translate(_.maketrans("T", " ", "Z")), # publishedAt
-            video_info_list[3], # videoId
+            video_info_list[1], # channel_id
+            _.translate(_.maketrans("T", " ", "Z")), # published_at
+            video_info_list[3], # video_id
             video_info_list[4], # title
             video_info_list[5], # description
-            "", # customDescription
+            "", # custom_description
             common.d2s(video_info_list[6]), # duration
             config["general"]["user"], # user
-            common.now(3),
-            common.now(3),
+            common.now(3), # created_at
+            common.now(3), # modified_at
             re.sub("[.]", "", os.path.splitext(file_name)[1]) # extension
+            )
+    insert_data(conn, insert_sql)
+
+def insert_channel_info(channel_id, channel_title):
+    insert_sql = '''INSERT INTO `channel_info`(
+        site,
+        channel_id,
+        channel_title,
+        user
+        ) VALUES ("{}", "{}", "{}", "{}")'''.format(
+            "YT",
+            channel_id,
+            channel_title,
+            config["general"]["user"]
             )
     insert_data(conn, insert_sql)
 
