@@ -117,14 +117,17 @@ def main(work_dir, is_video):
                                 try:
                                     video_info_list = []
                                     video_info_list = get_video_info(video_id) # Catch video_info_list from getyt.
+                                    channel_title = video_info_list[0]
                                     channel_id = video_info_list[1]
                                     published_at = video_info_list[2]
                                 except:
                                     error_apis = 1
                                 try:
                                     if error_apis == 0:
-                                        #insertgs.insert_video_info(video_info_list, file_name) # Throw video_info_list to insertgs.
+                                        ### insertgs.insert_video_info(video_info_list, file_name) # Throw video_info_list to insertgs.
                                         insertrdb.insert_video_info(video_info_list, file_name)
+                                        if insertrdb.channel_exists(channel_id) == 0:
+                                            insertrdb.insert_channel_info(channel_id, channel_title)
                                 except:
                                     error_apis = 2
                                 if error_apis == 0:
