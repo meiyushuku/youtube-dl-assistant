@@ -16,7 +16,6 @@ def connect():
             password = confidentials["insertRdb"]["password"],
             database = confidentials["insertRdb"]["database"]
         )
-        print("conn successfully") #
     except Exception as e:
         print("[DB Connection Error]", e)
         sys.exit(1)
